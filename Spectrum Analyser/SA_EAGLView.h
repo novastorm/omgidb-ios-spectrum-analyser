@@ -12,6 +12,8 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
+#import "SA_AudioController.h"
+
 @interface SA_EAGLView : UIView
 
 @property (assign) BOOL applicationResignActive;

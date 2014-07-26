@@ -16,6 +16,8 @@
 		3EB831741982FB1800AC0B9E /* SA_EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB831731982FB1800AC0B9E /* SA_EAGLView.m */; };
 		3EDBEC951983086600A46776 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDBEC941983086600A46776 /* OpenGLES.framework */; };
 		3EDBEC971983086F00A46776 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDBEC961983086F00A46776 /* QuartzCore.framework */; };
+		3EDBEC9C19833A3200A46776 /* SA_AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBEC9B19833A3200A46776 /* SA_AudioController.m */; };
+		3EDBEC9F19833C6000A46776 /* SA_BufferManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBEC9D19833C6000A46776 /* SA_BufferManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,10 @@
 		3EDBEC961983086F00A46776 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3EDBEC9819830C9F00A46776 /* SpectrumAnalyser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpectrumAnalyser-Prefix.pch"; sourceTree = "<group>"; };
 		3EDBEC9919830CEC00A46776 /* MFDUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFDUtilities.h; sourceTree = "<group>"; };
+		3EDBEC9A19833A3200A46776 /* SA_AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SA_AudioController.h; sourceTree = "<group>"; };
+		3EDBEC9B19833A3200A46776 /* SA_AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SA_AudioController.m; sourceTree = "<group>"; };
+		3EDBEC9D19833C6000A46776 /* SA_BufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SA_BufferManager.cpp; sourceTree = "<group>"; };
+		3EDBEC9E19833C6000A46776 /* SA_BufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SA_BufferManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,10 +101,14 @@
 				3EB8315419819A6900AC0B9E /* AppDelegate.m */,
 				3EB8315619819A6900AC0B9E /* ViewController.h */,
 				3EB8315719819A6900AC0B9E /* ViewController.m */,
-				3EB8315919819A6900AC0B9E /* Main.storyboard */,
-				3EB8315C19819A6900AC0B9E /* Images.xcassets */,
 				3EB831721982FB1800AC0B9E /* SA_EAGLView.h */,
 				3EB831731982FB1800AC0B9E /* SA_EAGLView.m */,
+				3EDBEC9A19833A3200A46776 /* SA_AudioController.h */,
+				3EDBEC9B19833A3200A46776 /* SA_AudioController.m */,
+				3EDBEC9E19833C6000A46776 /* SA_BufferManager.h */,
+				3EDBEC9D19833C6000A46776 /* SA_BufferManager.cpp */,
+				3EB8315919819A6900AC0B9E /* Main.storyboard */,
+				3EB8315C19819A6900AC0B9E /* Images.xcassets */,
 				3EB8314F19819A6900AC0B9E /* Supporting Files */,
 			);
 			path = "Spectrum Analyser";
@@ -241,6 +251,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EDBEC9C19833A3200A46776 /* SA_AudioController.m in Sources */,
+				3EDBEC9F19833C6000A46776 /* SA_BufferManager.cpp in Sources */,
 				3EB8315819819A6900AC0B9E /* ViewController.m in Sources */,
 				3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */,
 				3EB8315219819A6900AC0B9E /* main.m in Sources */,

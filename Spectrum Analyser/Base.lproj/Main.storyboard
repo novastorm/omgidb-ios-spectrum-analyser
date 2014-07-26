@@ -13,7 +13,7 @@
                         <viewControllerLayoutGuide type="top" id="xIS-Ao-M0r"/>
                         <viewControllerLayoutGuide type="bottom" id="wm4-7p-Hgc"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="En9-8t-FKm" customClass="SA_EAGLView">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="En9-8t-FKm" userLabel="EAGLView" customClass="SA_EAGLView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

@@ -8,12 +8,22 @@
 
 #import "SA_EAGLView.h"
 
+#import <QuartzCore/QuartzCore.h>
+#import <OpenGLES/EAGLDrawable.h>
+
+#import "SA_BufferManager.h"
+
 /******************************************************************************/
 @implementation SA_EAGLView
 {
     CAEAGLLayer* _eaglLayer;
     EAGLContext* _context;
-    GLuint _colorRenderBuffer;
+    
+    GLuint _viewRenderBuffer, _viewFrameBuffer;
+    
+    SA_AudioController* audioController;
+    Float32* _FFTData;
+    GLfloat* _oscilloscopeLine;
 }
 
 /******************************************************************************
@@ -25,9 +35,9 @@
 }
 
 /******************************************************************************
- called when xib is unarchived
+ called when xib is unarchived using interface builder
  ******************************************************************************/
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (id)initWithCoder:(NSCoder*)aDecoder
 {
     DLog(@"HELLO");
     self = [super initWithCoder:aDecoder];
@@ -44,11 +54,22 @@
 
 /******************************************************************************
  ******************************************************************************/
+- (void) dealloc
+{
+    free(_oscilloscopeLine);
+}
+
+/******************************************************************************
+ ******************************************************************************/
 - (void) setupLayer
 {
-    _eaglLayer = (CAEAGLLayer *) self.layer;
+    _eaglLayer = (CAEAGLLayer*) self.layer;
     
     _eaglLayer.opaque = YES;
+    _eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+        NO, kEAGLDrawablePropertyRetainedBacking
+        , kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat
+    	, nil];
 }
 
 /******************************************************************************
@@ -75,8 +96,8 @@
 - (void) setupRenderBuffer
 {
     DLog();
-    glGenRenderbuffers(1, &_colorRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, _colorRenderBuffer);
+    glGenRenderbuffers(1, &_viewRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, _viewRenderBuffer);
     [_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:_eaglLayer];
 }
 
@@ -88,7 +109,7 @@
     GLuint frameBuffer;
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _viewRenderBuffer);
 }
 
 /******************************************************************************
@@ -96,9 +117,13 @@
 - (void) render
 {
     DLog();
-    glClearColor(0, (104.0/255.0), (55.0/255.0), 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    [_context presentRenderbuffer:GL_RENDERBUFFER];
+//    glClearColor(0, (104.0/255.0), (55.0/255.0), 1.0);
+//    glClear(GL_COLOR_BUFFER_BIT);
+//    [_context presentRenderbuffer:GL_RENDERBUFFER];
+    audioController = [[SA_AudioController alloc] init];
+//    _FFTData = (Float32 *)calloc(<#size_t#>, <#size_t#>);
+    _oscilloscopeLine = (GLfloat*)malloc(kDefaultDrawSamples * 2 * sizeof(GLfloat));
+    
 }
 
 /******************************************************************************
