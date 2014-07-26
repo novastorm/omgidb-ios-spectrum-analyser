@@ -17,6 +17,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+//    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+//    DLog(@"allocate _view");
+//    self.view = [[SA_EAGLView alloc] initWithFrame:screenBounds];
+//    DLog(@"add subview");
+//    [self.window addSubview:_view];
+//    DLog(@"done");
+    
     return YES;
 }
 
