@@ -64,10 +64,10 @@
 class FFTHelper
 {
 public:
-    FFTHelper(UInt32 inMaxFramesPerSlice);
-    ~FFTHelper();
+    FFTHelper (UInt32 inMaxFramesPerSlice);
+    ~FFTHelper ();
     
-    void ComputeFFT(Float32* inAudioData, Float32* outFFTData);
+    void ComputeFFT (Float32* inAudioData, Float32* outFFTData);
     
 private:
     FFTSetup _SpectrumAnalysis;
