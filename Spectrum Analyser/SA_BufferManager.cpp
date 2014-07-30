@@ -91,14 +91,63 @@ BufferManager::~BufferManager()
     delete _FFTHelper; _FFTHelper = NULL;
 }
 
-void BufferManager::CycleDramBuffers()
+void BufferManager::SetDisplayMode (UInt32 inDisplayMode)
+{
+    _displayMode = inDisplayMode;
+}
+
+UInt32 BufferManager::GetDisplayMode ()
+{
+    return _displayMode;
+}
+
+Float32** BufferManager::GetDrawBuffers ()
+{
+    return _drawBuffers;
+}
+
+void BufferManager::CopyAudioDataToDrawBuffer (Float32* inData, UInt32 inNumberOfFrames)
+{
+    if (inData == NULL) { return; }
+
+    for (UInt32 i = 0; i < inNumberOfFrames; ++i) {
+        if ((i + _drawBufferIndex) >= _currentDrawBufferLength) {
+            CycleDrawBuffers();
+            _drawBufferIndex = -i;
+        }
+        _drawBuffers[0][i + _drawBufferIndex] = inData[i];
+    }
+    _drawBufferIndex += inNumberOfFrames;
+}
+
+void BufferManager::CycleDrawBuffers()
 {
     for (int drawBuffer_i = (kNumDrawBuffers - 2); drawBuffer_i >= 0; drawBuffer_i--) {
         memmove(_drawBuffers[drawBuffer_i + 1], _drawBuffers[drawBuffer_i], _currentDrawBufferLength);
     }
 }
 
-void BufferManager::CopyAduioDataToFFTInputBuffer(Float32 *inData, UInt32 numberOfFrames)
+void BufferManager::SetCurrentDrawBufferLength (UInt32 inDrawBufferLength)
+{
+    _currentDrawBufferLength = inDrawBufferLength;
+}
+
+UInt32 BufferManager::GetCurrentDrawBufferLength ()
+{
+    return _currentDrawBufferLength;
+}
+
+bool BufferManager::HasNewFFTData ()
+{
+    return static_cast<bool>(_hasNewFFTData);
+}
+
+bool BufferManager::NeedsNewFFTData ()
+{
+    return static_cast<bool>(_needsNewFFTData);
+}
+
+void BufferManager::CopyAudioDataToFFTInputBuffer(Float32 *inData, UInt32 numberOfFrames)
 {
     UInt32 framesToCopy = min(numberOfFrames, _FFTInputBufferLength - _FFTInputBufferFrameIndex);
     memcpy(_FFTInputBuffer + _FFTInputBufferFrameIndex, inData, framesToCopy * sizeof(Float32));
@@ -107,6 +156,11 @@ void BufferManager::CopyAduioDataToFFTInputBuffer(Float32 *inData, UInt32 number
         OSAtomicIncrement32(&_hasNewFFTData);
         OSAtomicDecrement32(&_needsNewFFTData);
     }
+}
+
+UInt32 BufferManager::GetFFTOutputBufferLength ()
+{
+    return _FFTInputBufferLength / 2;
 }
 
 void BufferManager::GetFFTOutput(Float32 *outFFTData)

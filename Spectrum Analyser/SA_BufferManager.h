@@ -89,21 +89,21 @@ public:
     BufferManager (UInt32 inMaxFramesPerSlice);
     ~BufferManager ();
     
-    void SetDisplayMode (UInt32 inDisplayMode) { _displayMode = inDisplayMode; }
-    UInt32 GetDisplayMode () { return _displayMode; }
+    void SetDisplayMode (UInt32 inDisplayMode);
+    UInt32 GetDisplayMode ();
 
-    Float32** GetDrawBuffers () { return _drawBuffers; }
+    Float32** GetDrawBuffers ();
     void CopyAudioDataToDrawBuffer (Float32* inData, UInt32 numberOfFrames);
-    void CycleDramBuffers ();
+    void CycleDrawBuffers ();
 
-    void SetCurrentDrawBufferLength (UInt32 inDrawBufferLength) { _currentDrawBufferLength = inDrawBufferLength; }
-    UInt32 GetCurrentDrawBufferLength () { return _currentDrawBufferLength; }
+    void SetCurrentDrawBufferLength (UInt32 inDrawBufferLength);
+    UInt32 GetCurrentDrawBufferLength ();
     
-    bool HasNewFFTData () { return static_cast<bool>(_hasNewFFTData); }
-    bool NeedsNewFFTData () { return static_cast<bool>(_needsNewFFTData); }
+    bool HasNewFFTData ();
+    bool NeedsNewFFTData ();
     
-    void CopyAduioDataToFFTInputBuffer (Float32* inData, UInt32 numberOfFrames);
-    UInt32 GetFFTOutputBufferLength () { return _FFTInputBufferLength / 2; }
+    void CopyAudioDataToFFTInputBuffer (Float32* inData, UInt32 numberOfFrames);
+    UInt32 GetFFTOutputBufferLength ();
     void GetFFTOutput (Float32* outFFTData);
 };
 
