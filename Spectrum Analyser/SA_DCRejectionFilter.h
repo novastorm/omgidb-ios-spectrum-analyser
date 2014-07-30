@@ -47,8 +47,8 @@
  
  */
 
-#ifndef __aurioTouch3__DCRejectionFilter__
-#define __aurioTouch3__DCRejectionFilter__
+#ifndef __Spectrum_Analyser__DCRejectionFilter__
+#define __Spectrum_Analyser__DCRejectionFilter__
 
 
 #include <AudioToolbox/AudioToolbox.h>
@@ -67,4 +67,4 @@ private:
 	Float32 mX1;
 };
 
-#endif /* defined(__aurioTouch3__DCRejectionFilter__) */
+#endif /* defined(__Spectrum_Analyser__DCRejectionFilter__) */
