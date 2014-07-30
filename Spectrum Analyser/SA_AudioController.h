@@ -12,16 +12,10 @@
 #import "SA_BufferManager.h"
 #import "SA_DCRejectionFilter.h"
 
-@interface SA_AudioController : NSObject
-{
-    AudioUnit _rioUnit;
-    BufferManager* _bufferManager;
-    DCRejectionFilter* _DCRejectionFilter;
-    AVAudioPlayer* _audioPlayer;
-}
+@interface AudioController : NSObject
 
-@property (nonatomic, assign) BOOL muteAudio;
-@property (nonatomic, assign, readonly) BOOL audioChainIsBeingReconstructed;
+@property (nonatomic) BOOL muteAudio;
+@property (nonatomic, readonly) BOOL audioChainIsBeingReconstructed;
 
 - (BufferManager*) getBufferManagerInstance;
 - (OSStatus) startIOUnit;
