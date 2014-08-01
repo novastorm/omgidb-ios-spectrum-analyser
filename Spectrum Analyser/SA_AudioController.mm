@@ -8,8 +8,6 @@
 
 #import "SA_AudioController.h"
 
-#import <AVFoundation/AVFoundation.h>
-
 #import "CAXException.h"
 #import "CAStreamBasicDescription.h"
 
