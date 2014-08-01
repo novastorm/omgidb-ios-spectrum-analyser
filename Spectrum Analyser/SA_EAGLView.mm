@@ -13,9 +13,46 @@
 
 #import "SA_BufferManager.h"
 
+#define USE_DEPTH_BUFFER YES
+
+#ifndef CLAMP
+#define CLAMP(min, x, max) (x < min ? min : (x > max ? max : x))
+#endif
+
+const GLfloat _Spectrum_bar_width = 4;
+const GLsizei _NumberOfFrameBuffers = 1;
+
+// value, alpha, red, green, blue
+const GLfloat _ColorLevels[] = {
+      0.000, 1.0, 0.0, 0.0, 0.0
+    , 0.333, 1.0, 0.7, 0.0, 0.0
+    , 0.667, 1.0, 0.0, 0.0, 1.0
+    , 1.000, 1.0, 0.0, 1.0, 1.0
+};
+
+enum {
+    kMinDrawSamples = 64
+    , kMaxDrawSamples = 4096
+};
+
+typedef struct SpectrumLinkedTexture {
+    GLuint textureName;
+    struct SpectrumLinkedTexture* nextTexture;
+} SpectrumLinkedTexture;
+
+typedef enum SA_DisplayMode {
+    SA_DisplayModeOscilloscopeWaveform
+    , SA_DisplayModeOscilloscopeFFT
+} SA_DisplayMode;
+
+
 /******************************************************************************/
-@implementation SA_EAGLView
+@interface EAGLView ()
 {
+    // Render buffer dimensions
+    GLuint _renderBufferWidth;
+    GLuint _renderBufferHeight;
+    
     EAGLContext* _context;
     
     // OpenGl Render and Frame Buffers
@@ -24,16 +61,31 @@
     // OpenGL depth buffer
     GLuint _depthRenderBuffer;
     
+    NSTimer* _animationTimer;
+    NSTimeInterval _animationInterval;
+    NSTimeInterval _animationStarted;
     
-    NSTimer* animationTimer;
-    NSTimeInterval animationTimeInterval;
-    NSTimeInterval animationStarted;
+    UIImageView* sampleSizeOverlay;
     
+    BOOL initted_oscilloscope;
+    UInt32* _textureBitBuffer;
     
-    AudioController* audioController;
+    SA_DisplayMode _displayMode;
+    
+    UIEvent* _pinchEvent;
+    CGFloat _lastPinchDist;
+    
+    AudioController* _audioController;
     Float32* _FFTData;
     GLfloat* _oscilloscopeLine;
 }
+
+@end
+
+/******************************************************************************/
+@implementation EAGLView
+
+@synthesize applicationResignActive = _applicationResignActive;
 
 /******************************************************************************
  set default layer to CAEAGLLayer class **required**
@@ -48,15 +100,32 @@
  ******************************************************************************/
 - (id)initWithCoder:(NSCoder*)aDecoder
 {
-    DLog();
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.frame = [[UIScreen mainScreen] bounds];
         [self setupLayer];
-        [self setupContext];
-        [self setupRenderBuffer];
-        [self setupFrameBuffer];
-//        [self render];
+        if(![self setupContext] || ![self setupFrameBuffer]) return nil;
+        
+        _audioController = [[AudioController alloc] init];
+        _FFTData = (Float32*)calloc([_audioController getBufferManagerInstance]->GetFFTOutputBufferLength(), sizeof(Float32));
+        
+        _oscilloscopeLine = (GLfloat*)malloc(kDefaultDrawSamples * 2 * sizeof(GLfloat));
+        
+        _animationInterval = 1.0 / 60.0;
+        
+//        [self setupView];
+//        [self drawView];
+        
+        _displayMode = SA_DisplayModeOscilloscopeWaveform;
+        
+        // setup overlay view for oscilloscope pinch/zoom
+//        UIImage* img_ui = nil;
+//        {
+//            // draw bg path rounded rectangle
+//            CGPathRef bgPath = CreateRoundedRectPath(CGRectMake(0, 0, 110,234), 15.0);
+//        }
+
+        [self render];
     }
     return self;
 }
@@ -70,7 +139,7 @@
 /******************************************************************************/
 - (void) setupLayer
 {
-     CAEAGLLayer* eaglLayer = (CAEAGLLayer*) self.layer;
+     CAEAGLLayer* eaglLayer = (CAEAGLLayer*)self.layer;
     
     eaglLayer.opaque = YES;
     eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -80,65 +149,68 @@
 }
 
 /******************************************************************************/
-- (void) setupContext
+- (BOOL) setupContext
 {
-    DLog();
-    EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
-    _context = [[EAGLContext alloc] initWithAPI:api];
+    _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
     if (! _context) {
-        DLog(@"Failed to initialize OpenGLES 2.0 context");
-        exit(1);
+        ALog(@"Failed to initialize OpenGLES 2.0 context");
+        return NO;
     }
     
     if (! [EAGLContext setCurrentContext:_context]) {
-        DLog(@"Failed to set current OpenGL context");
-        exit(1);
+        ALog(@"Failed to set current OpenGL context");
+        return NO;
     }
+
+    return YES;
 }
 
 /******************************************************************************/
-- (void) setupRenderBuffer
+- (BOOL) setupRenderBuffer
 {
-    DLog();
-    glGenRenderbuffers(1, &_viewRenderBuffer);
+    glGenRenderbuffers(_NumberOfFrameBuffers, &_viewRenderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, _viewRenderBuffer);
     [_context
      renderbufferStorage:GL_RENDERBUFFER
-     fromDrawable:(CAEAGLLayer*) self.layer];
+     fromDrawable:(CAEAGLLayer*)self.layer];
+    
+    return YES;
 }
 
 /******************************************************************************/
-- (void) setupFrameBuffer
+- (BOOL) setupFrameBuffer
 {
-    DLog();
-//    GLuint frameBuffer;
-    glGenFramebuffers(1, &_viewFrameBuffer);
+    [self setupRenderBuffer];
+    glGenFramebuffers(_NumberOfFrameBuffers, &_viewFrameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _viewFrameBuffer);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _viewRenderBuffer);
+    
+    return YES;
 }
 
 /******************************************************************************/
 - (void) render
 {
-    DLog();
-    glClearColor(0, (104.0/255.0), (55.0/255.0), 1.0);
+    glClearColor(0.0, 104.0/255, 55.0/255, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     [_context presentRenderbuffer:GL_RENDERBUFFER];
-
-//    audioController = [[SA_AudioController alloc] init];
-////    _FFTData = (Float32 *)calloc(<#size_t#>, <#size_t#>);
-//    _oscilloscopeLine = (GLfloat*)malloc(kDefaultDrawSamples * 2 * sizeof(GLfloat));
-    
 }
 
 /******************************************************************************/
+- (void) setupView
+{
+    // setup OpenGL ES matrices and transforms
+    glViewport(0, 0, _renderBufferWidth, _renderBufferHeight);
+}
 
+/******************************************************************************/
 - (void) startAnimation
 {
     
 }
 
+/******************************************************************************/
 - (void) stopAnimation
 {
     

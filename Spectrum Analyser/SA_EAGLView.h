@@ -14,7 +14,7 @@
 
 #import "SA_AudioController.h"
 
-@interface SA_EAGLView : UIView
+@interface EAGLView : UIView
 
 @property (assign) BOOL applicationResignActive;
 
