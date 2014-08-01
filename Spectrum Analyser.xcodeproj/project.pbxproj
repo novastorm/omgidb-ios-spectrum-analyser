@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E19BA2D198C346C008BBCBD /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E19BA2A198C346C008BBCBD /* AGLKContext.m */; };
+		3E19BA2E198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E19BA2C198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m */; };
+		3E19BA30198C3555008BBCBD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E19BA2F198C3555008BBCBD /* GLKit.framework */; };
 		3EB8315219819A6900AC0B9E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315119819A6900AC0B9E /* main.m */; };
 		3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315419819A6900AC0B9E /* AppDelegate.m */; };
-		3EB8315819819A6900AC0B9E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315719819A6900AC0B9E /* ViewController.m */; };
+		3EB8315819819A6900AC0B9E /* SA_ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315719819A6900AC0B9E /* SA_ViewController.m */; };
 		3EB8315B19819A6900AC0B9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315919819A6900AC0B9E /* Main.storyboard */; };
 		3EB8315D19819A6900AC0B9E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315C19819A6900AC0B9E /* Images.xcassets */; };
 		3EB8316919819A6900AC0B9E /* Spectrum_AnalyserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8316819819A6900AC0B9E /* Spectrum_AnalyserTests.m */; };
@@ -43,13 +46,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E19BA29198C346C008BBCBD /* AGLKContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGLKContext.h; sourceTree = "<group>"; };
+		3E19BA2A198C346C008BBCBD /* AGLKContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGLKContext.m; sourceTree = "<group>"; };
+		3E19BA2B198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
+		3E19BA2C198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
+		3E19BA2F198C3555008BBCBD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		3EB8314C19819A6900AC0B9E /* Spectrum Analyser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spectrum Analyser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EB8315019819A6900AC0B9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EB8315119819A6900AC0B9E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EB8315319819A6900AC0B9E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3EB8315419819A6900AC0B9E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3EB8315619819A6900AC0B9E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		3EB8315719819A6900AC0B9E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		3EB8315619819A6900AC0B9E /* SA_ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SA_ViewController.h; sourceTree = "<group>"; };
+		3EB8315719819A6900AC0B9E /* SA_ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SA_ViewController.m; sourceTree = "<group>"; };
 		3EB8315A19819A6900AC0B9E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3EB8315C19819A6900AC0B9E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3EB8316219819A6900AC0B9E /* Spectrum AnalyserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spectrum AnalyserTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E19BA30198C3555008BBCBD /* GLKit.framework in Frameworks */,
 				3EDBECBD19883D9600A46776 /* Foundation.framework in Frameworks */,
 				3EDBECBB19883D8E00A46776 /* UIKit.framework in Frameworks */,
 				3EDBECB919883D8400A46776 /* CoreGraphics.framework in Frameworks */,
@@ -135,10 +144,14 @@
 		3EB8314E19819A6900AC0B9E /* Spectrum Analyser */ = {
 			isa = PBXGroup;
 			children = (
+				3E19BA29198C346C008BBCBD /* AGLKContext.h */,
+				3E19BA2A198C346C008BBCBD /* AGLKContext.m */,
+				3E19BA2B198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.h */,
+				3E19BA2C198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m */,
 				3EB8315319819A6900AC0B9E /* AppDelegate.h */,
 				3EB8315419819A6900AC0B9E /* AppDelegate.m */,
-				3EB8315619819A6900AC0B9E /* ViewController.h */,
-				3EB8315719819A6900AC0B9E /* ViewController.m */,
+				3EB8315619819A6900AC0B9E /* SA_ViewController.h */,
+				3EB8315719819A6900AC0B9E /* SA_ViewController.m */,
 				3EB831721982FB1800AC0B9E /* SA_EAGLView.h */,
 				3EB831731982FB1800AC0B9E /* SA_EAGLView.mm */,
 				3EDBEC9A19833A3200A46776 /* SA_AudioController.h */,
@@ -188,6 +201,7 @@
 		3EB831751983079000AC0B9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E19BA2F198C3555008BBCBD /* GLKit.framework */,
 				3EDBECBC19883D9600A46776 /* Foundation.framework */,
 				3EDBECBA19883D8E00A46776 /* UIKit.framework */,
 				3EDBECB819883D8400A46776 /* CoreGraphics.framework */,
@@ -322,11 +336,13 @@
 				3EDBEC9C19833A3200A46776 /* SA_AudioController.mm in Sources */,
 				3EDBEC9F19833C6000A46776 /* SA_BufferManager.cpp in Sources */,
 				3EDBECA21986F63100A46776 /* SA_FFTHelper.cpp in Sources */,
-				3EB8315819819A6900AC0B9E /* ViewController.m in Sources */,
+				3EB8315819819A6900AC0B9E /* SA_ViewController.m in Sources */,
+				3E19BA2E198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m in Sources */,
 				3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */,
 				3EB8315219819A6900AC0B9E /* main.m in Sources */,
 				3EDBECA719872AEA00A46776 /* SA_DCRejectionFilter.cpp in Sources */,
 				3EB831741982FB1800AC0B9E /* SA_EAGLView.mm in Sources */,
+				3E19BA2D198C346C008BBCBD /* AGLKContext.m in Sources */,
 				3EDBECAD198735C300A46776 /* CAStreamBasicDescription.cpp in Sources */,
 				3EDBECB119883AA900A46776 /* CADebugMacros.cpp in Sources */,
 			);
