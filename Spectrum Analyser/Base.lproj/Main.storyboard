@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cHP-tZ-Ij3">
     <dependencies>
         <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6190.4"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="ufC-wZ-h7g">
+        <!--GLKit View Controller-->
+        <scene sceneID="5Ga-Ht-Fkg">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                <glkViewController preferredFramesPerSecond="30" id="cHP-tZ-Ij3" customClass="SA_ViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xIS-Ao-M0r"/>
-                        <viewControllerLayoutGuide type="bottom" id="wm4-7p-Hgc"/>
+                        <viewControllerLayoutGuide type="top" id="H7r-dN-fFV"/>
+                        <viewControllerLayoutGuide type="bottom" id="h8Y-By-Ksa"/>
                     </layoutGuides>
-                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="En9-8t-FKm" userLabel="EAGLView" customClass="SA_EAGLView">
+                    <glkView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" id="Hrq-Pu-hER">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kbk-5G-daz">
-                                <rect key="frame" x="279" y="142" width="42" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAj-Ii-AtZ">
+                                <rect key="frame" x="279" y="224" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Kbk-5G-daz" firstAttribute="centerX" secondItem="En9-8t-FKm" secondAttribute="centerX" id="5aY-yW-PPG"/>
-                            <constraint firstItem="Kbk-5G-daz" firstAttribute="top" secondItem="xIS-Ao-M0r" secondAttribute="bottom" constant="122" id="8nh-N4-BtW"/>
+                            <constraint firstItem="KAj-Ii-AtZ" firstAttribute="centerX" secondItem="Hrq-Pu-hER" secondAttribute="centerX" id="Ewf-QE-cix"/>
+                            <constraint firstItem="KAj-Ii-AtZ" firstAttribute="top" secondItem="H7r-dN-fFV" secondAttribute="bottom" constant="204" id="hYy-Qe-CRr"/>
                         </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                        <connections>
+                            <outlet property="delegate" destination="cHP-tZ-Ij3" id="1Kt-fC-Jto"/>
+                        </connections>
+                    </glkView>
+                </glkViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yox-61-VD8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="407"/>
+            <point key="canvasLocation" x="430" y="453"/>
         </scene>
     </scenes>
 </document>
