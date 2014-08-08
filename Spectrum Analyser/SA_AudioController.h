@@ -14,6 +14,11 @@
 
 @interface AudioController : NSObject
 
+typedef enum SA_DisplayMode {
+    SA_DisplayModeOscilloscopeWaveform
+    , SA_DisplayModeOscilloscopeFFT
+} SA_DisplayMode;
+
 @property (nonatomic) BOOL muteAudio;
 @property (nonatomic, readonly) BOOL audioChainIsBeingReconstructed;
 

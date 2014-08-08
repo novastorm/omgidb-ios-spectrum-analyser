@@ -12,7 +12,7 @@
 		3E19BA30198C3555008BBCBD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E19BA2F198C3555008BBCBD /* GLKit.framework */; };
 		3EB8315219819A6900AC0B9E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315119819A6900AC0B9E /* main.m */; };
 		3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315419819A6900AC0B9E /* AppDelegate.m */; };
-		3EB8315819819A6900AC0B9E /* SA_ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315719819A6900AC0B9E /* SA_ViewController.m */; };
+		3EB8315819819A6900AC0B9E /* SA_ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8315719819A6900AC0B9E /* SA_ViewController.mm */; };
 		3EB8315B19819A6900AC0B9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315919819A6900AC0B9E /* Main.storyboard */; };
 		3EB8315D19819A6900AC0B9E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315C19819A6900AC0B9E /* Images.xcassets */; };
 		3EB8316919819A6900AC0B9E /* Spectrum_AnalyserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8316819819A6900AC0B9E /* Spectrum_AnalyserTests.m */; };
@@ -57,7 +57,7 @@
 		3EB8315319819A6900AC0B9E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3EB8315419819A6900AC0B9E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3EB8315619819A6900AC0B9E /* SA_ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SA_ViewController.h; sourceTree = "<group>"; };
-		3EB8315719819A6900AC0B9E /* SA_ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SA_ViewController.m; sourceTree = "<group>"; };
+		3EB8315719819A6900AC0B9E /* SA_ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SA_ViewController.mm; sourceTree = "<group>"; };
 		3EB8315A19819A6900AC0B9E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3EB8315C19819A6900AC0B9E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3EB8316219819A6900AC0B9E /* Spectrum AnalyserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spectrum AnalyserTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +151,7 @@
 				3EB8315319819A6900AC0B9E /* AppDelegate.h */,
 				3EB8315419819A6900AC0B9E /* AppDelegate.m */,
 				3EB8315619819A6900AC0B9E /* SA_ViewController.h */,
-				3EB8315719819A6900AC0B9E /* SA_ViewController.m */,
+				3EB8315719819A6900AC0B9E /* SA_ViewController.mm */,
 				3EB831721982FB1800AC0B9E /* SA_EAGLView.h */,
 				3EB831731982FB1800AC0B9E /* SA_EAGLView.mm */,
 				3EDBEC9A19833A3200A46776 /* SA_AudioController.h */,
@@ -336,7 +336,7 @@
 				3EDBEC9C19833A3200A46776 /* SA_AudioController.mm in Sources */,
 				3EDBEC9F19833C6000A46776 /* SA_BufferManager.cpp in Sources */,
 				3EDBECA21986F63100A46776 /* SA_FFTHelper.cpp in Sources */,
-				3EB8315819819A6900AC0B9E /* SA_ViewController.m in Sources */,
+				3EB8315819819A6900AC0B9E /* SA_ViewController.mm in Sources */,
 				3E19BA2E198C346C008BBCBD /* AGLKVertexAttribArrayBuffer.m in Sources */,
 				3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */,
 				3EB8315219819A6900AC0B9E /* main.m in Sources */,

@@ -40,10 +40,10 @@ typedef struct SpectrumLinkedTexture {
     struct SpectrumLinkedTexture* nextTexture;
 } SpectrumLinkedTexture;
 
-typedef enum SA_DisplayMode {
-    SA_DisplayModeOscilloscopeWaveform
-    , SA_DisplayModeOscilloscopeFFT
-} SA_DisplayMode;
+//typedef enum SA_DisplayMode {
+//    SA_DisplayModeOscilloscopeWaveform
+//    , SA_DisplayModeOscilloscopeFFT
+//} SA_DisplayMode;
 
 
 /******************************************************************************/

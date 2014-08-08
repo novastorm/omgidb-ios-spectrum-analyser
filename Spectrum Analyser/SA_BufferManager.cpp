@@ -82,7 +82,7 @@ BufferManager::BufferManager (UInt32 inMaxFramesPerSlice) :
 
 BufferManager::~BufferManager()
 {
-    for (UInt32 i = 0; i < kDefaultDrawSamples; ++i) {
+    for (UInt32 i = 0; i < kNumDrawBuffers; ++i) {
         free(_drawBuffers[i]);
         _drawBuffers[i] = NULL;
     }
@@ -110,7 +110,7 @@ void BufferManager::CopyAudioDataToDrawBuffer (Float32* inData, UInt32 inNumberO
 {
     if (inData == NULL) { return; }
 
-    for (UInt32 i = 0; i < inNumberOfFrames; ++i) {
+    for (UInt32 i = 0; i < inNumberOfFrames; i++) {
         if ((i + _drawBufferIndex) >= _currentDrawBufferLength) {
             CycleDrawBuffers();
             _drawBufferIndex = -i;

@@ -11,12 +11,6 @@
 #import "CAXException.h"
 #import "CAStreamBasicDescription.h"
 
-typedef enum displayMode
-{
-    displayModeOscilloscopeWaveform
-    , displayModeOscilloscopeFFT
-} displayMode;
-
 struct CallbackData
 {
     AudioUnit rioUnit;
@@ -49,13 +43,13 @@ static OSStatus performRender (
         
         // Filter average offset (DC component)
         cd.dcRejectionFilter->ProcessInplace((Float32*)ioData->mBuffers[0].mData, inNumberFrames);
-        
+
         switch (cd.bufferManager->GetDisplayMode()) {
-            case displayModeOscilloscopeWaveform :
+            case SA_DisplayModeOscilloscopeWaveform :
                 cd.bufferManager->CopyAudioDataToDrawBuffer((Float32*)ioData->mBuffers[0].mData, inNumberFrames);
                 break;
             
-            case displayModeOscilloscopeFFT :
+            case SA_DisplayModeOscilloscopeFFT :
                 if (cd.bufferManager->NeedsNewFFTData()) {
                     cd.bufferManager->CopyAudioDataToFFTInputBuffer((Float32*)ioData->mBuffers[0].mData, inNumberFrames);
                 }

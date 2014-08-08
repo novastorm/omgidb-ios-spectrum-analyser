@@ -64,7 +64,7 @@
 #include "SA_FFTHelper.h"
 
 const UInt32 kNumDrawBuffers = 12;
-const UInt32 kDefaultDrawSamples = 1024;
+const UInt32 kDefaultDrawSamples = 512;
 
 const UInt32 kDisplayModeOscilloscopeWaveForm = 0;
 
