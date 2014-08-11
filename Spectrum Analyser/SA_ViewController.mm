@@ -135,15 +135,22 @@ static const SceneVertex vertices[] =
     	initWithAttribStride:2 * sizeof(GLfloat)
         numberOfVertices:bufferManager->GetCurrentDrawBufferLength()
         bytes:_oscilloscopeLine
-        usage:GL_DYNAMIC_DRAW
+        usage:GL_STATIC_DRAW
     ];
 
-    [self drawView];
+//    [self drawView];
 //    _displayMode = SA_DisplayModeOscilloscopeWaveform;
     _displayMode = SA_DisplayModeOscilloscopeFFT;
     bufferManager->SetDisplayMode(_displayMode);
-    [self setAnimationInterval:1.0 / 20.0];
+//    [self setAnimationInterval:_animationTimeInterval];
     [self startAnimation];
+}
+
+/******************************************************************************/
+- (void) update
+{
+//    DLog();
+    [self drawView];
 }
 
 /******************************************************************************
@@ -153,24 +160,30 @@ static const SceneVertex vertices[] =
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
 //    DLog();
-//    [self.baseEffect prepareToDraw];
+    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
+
+    GLfloat max = kDefaultDrawSamples;
+
+    [self.vertexBuffer
+     reinitWithAttribStride:2 * sizeof(GLfloat)
+     numberOfVertices:max
+     bytes:_oscilloscopeLine
+     ];
     
-//    // clear back frame buffer
-//    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-//
-//    [self.vertexBuffer
-//    	prepareToDrawWithAttrib:GLKVertexAttribPosition
-//        numberOfCoordinates:3
-//        attribOffset:offsetof(SceneVertex, positionCoords)
-//        shouldEnable:YES
-//    ];
-//    
-//    // draw triangles
-//    [self.vertexBuffer
-//    	drawArrayWithMode:GL_LINE_STRIP
-//        startVertexIndex:0
-//        numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
-//    ];
+    [self.vertexBuffer
+     prepareToDrawWithAttrib:GLKVertexAttribPosition
+     numberOfCoordinates:2
+     attribOffset:0
+     shouldEnable:YES
+     ];
+    
+    [self.baseEffect prepareToDraw];
+    
+    [self.vertexBuffer
+     drawArrayWithMode:GL_LINE_STRIP
+     startVertexIndex:0
+     numberOfVertices:max
+     ];
 }
 
 /******************************************************************************/
@@ -181,7 +194,7 @@ static const SceneVertex vertices[] =
 //    if (_applicationResignedActive) return;
     
     [AGLKContext setCurrentContext:view.context];
-    [self.baseEffect prepareToDraw];
+//    [self.baseEffect prepareToDraw];
     [self drawView:self forTime:([NSDate timeIntervalSinceReferenceDate] - _animationStarted)];
 }
 
@@ -212,8 +225,8 @@ static const SceneVertex vertices[] =
     GLKView *view = (GLKView*) self.view;
     [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
     
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     
     BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     Float32** drawBuffers = bufferManager->GetDrawBuffers();
@@ -246,7 +259,7 @@ static const SceneVertex vertices[] =
                 
                 drawBuffers[0][y] = CLAMP(0.0, interpVal, 1.0);
             }
-//            [self cycleOscilloscopeLines];
+            [self cycleOscilloscopeLines];
         }
     }
     
@@ -258,8 +271,8 @@ static const SceneVertex vertices[] =
     UInt32 drawBuffer_i;
     // draw a line for each stored line in the buffer
 //    for (drawBuffer_i = 0; drawBuffer_i < kNumDrawBuffers; drawBuffer_i++) {
-    for (drawBuffer_i = 0; drawBuffer_i < 2; drawBuffer_i++) {
-//    for (drawBuffer_i = 0; drawBuffer_i < 1; drawBuffer_i++) {
+//    for (drawBuffer_i = 0; drawBuffer_i < 2; drawBuffer_i++) {
+    for (drawBuffer_i = 0; drawBuffer_i < 1; drawBuffer_i++) {
         if (!drawBuffers[drawBuffer_i]) continue;
         
         oscilloscopeLine_ptr = _oscilloscopeLine;
@@ -273,11 +286,11 @@ static const SceneVertex vertices[] =
         }
 
         // set last value to 0 clean up line connecting last point to first point
-        *(oscilloscopeLine_ptr - 1) = 0.75;
+        *(oscilloscopeLine_ptr - 1) = 0.0;
         
-        *(_oscilloscopeLine + 256 - 1) = 0.5;
-        *(_oscilloscopeLine + 512 - 1) = 0.75;
-//        *(_oscilloscopeLine + 1024 - 1) = 0.5;
+        *(_oscilloscopeLine + 256 - 1) = 0.25;
+        *(_oscilloscopeLine + 512 - 1) = 0.50;
+        *(_oscilloscopeLine + 1024 - 1) = 0.75;
         
         // draw newest line in solid green, else draw in faded green
         if (drawBuffer_i == 0) {
@@ -287,24 +300,24 @@ static const SceneVertex vertices[] =
             self.baseEffect.constantColor = GLKVector4Make(0.0, 1.0, 0.0, (1.0 * (1.0 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers))));
         }
         
-        [self.vertexBuffer
-         reinitWithAttribStride:2 * sizeof(GLfloat) numberOfVertices:max bytes:_oscilloscopeLine
-         ];
-        
-        [self.vertexBuffer
-         prepareToDrawWithAttrib:GLKVertexAttribPosition numberOfCoordinates:2 attribOffset:0 shouldEnable:YES
-         ];
-        
-        [self.vertexBuffer
-         drawArrayWithMode:GL_LINE_STRIP startVertexIndex:0 numberOfVertices:max
-         ];
+//        [self.vertexBuffer
+//         reinitWithAttribStride:2 * sizeof(GLfloat) numberOfVertices:max bytes:_oscilloscopeLine
+//         ];
+//        
+//        [self.vertexBuffer
+//         prepareToDrawWithAttrib:GLKVertexAttribPosition numberOfCoordinates:2 attribOffset:0 shouldEnable:YES
+//         ];
+//        
+//        [self.vertexBuffer
+//         drawArrayWithMode:GL_LINE_STRIP startVertexIndex:0 numberOfVertices:max
+//         ];
     }
 }
 
 /******************************************************************************/
 - (void) cycleOscilloscopeLines
 {
-//    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
+    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     // Cycle draw buffer line display
 //    bufferManager->CycleDrawBuffers();
 //    Float32** drawBuffers = bufferManager->GetDrawBuffers();
@@ -316,33 +329,33 @@ static const SceneVertex vertices[] =
 /******************************************************************************/
 - (void) setAnimationInterval:(NSTimeInterval)interval
 {
-    _animationTimeInterval = interval;
-    
-    if (_animationTimer) {
-        [self stopAnimation];
-        [self startAnimation];
-    }
+//    _animationTimeInterval = interval;
+//    
+//    if (_animationTimer) {
+//        [self stopAnimation];
+//        [self startAnimation];
+//    }
 }
 
 /******************************************************************************/
 - (void) startAnimation
 {
-    _animationTimer = [NSTimer
-    	scheduledTimerWithTimeInterval:_animationTimeInterval
-        target:self
-        selector:@selector(drawView)
-        userInfo:nil
-        repeats:YES
-        ];
-    _animationStarted = [NSDate timeIntervalSinceReferenceDate];
+//    _animationTimer = [NSTimer
+//    	scheduledTimerWithTimeInterval:_animationTimeInterval
+//        target:self
+//        selector:@selector(drawView)
+//        userInfo:nil
+//        repeats:YES
+//        ];
+//    _animationStarted = [NSDate timeIntervalSinceReferenceDate];
     [_audioController startIOUnit];
 }
 
 /******************************************************************************/
 - (void) stopAnimation
 {
-    [_animationTimer invalidate];
-    _animationTimer = nil;
+//    [_animationTimer invalidate];
+//    _animationTimer = nil;
     [_audioController stopIOUnit];
 }
 
