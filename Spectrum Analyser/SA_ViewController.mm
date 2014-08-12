@@ -152,6 +152,10 @@ static const SceneVertex vertices[] =
     bufferManager->SetDisplayMode(_displayMode);
 //    [self setAnimationInterval:_animationTimeInterval];
 //    [self startAnimation];
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
     [_audioController startIOUnit];
 }
 
@@ -234,9 +238,6 @@ static const SceneVertex vertices[] =
 //    DLog();
     GLKView *view = (GLKView*) self.view;
 //    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-    
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     
     BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     Float32** drawBuffers = bufferManager->GetDrawBuffers();

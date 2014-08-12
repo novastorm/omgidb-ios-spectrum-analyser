@@ -123,7 +123,7 @@ void BufferManager::CopyAudioDataToDrawBuffer (Float32* inData, UInt32 inNumberO
 void BufferManager::CycleDrawBuffers()
 {
     for (int drawBuffer_i = (kNumDrawBuffers - 2); drawBuffer_i >= 0; drawBuffer_i--) {
-        memmove(_drawBuffers[drawBuffer_i + 1], _drawBuffers[drawBuffer_i], _currentDrawBufferLength);
+        memmove(_drawBuffers[drawBuffer_i + 1], _drawBuffers[drawBuffer_i], _currentDrawBufferLength * sizeof(Float32));
     }
 }
 
