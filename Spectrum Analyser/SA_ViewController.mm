@@ -281,9 +281,6 @@ static const SceneVertex vertices[] =
     
     UInt32 drawBuffer_i;
     // draw a line for each stored line in the buffer
-//    for (drawBuffer_i = 0; drawBuffer_i < kNumDrawBuffers; drawBuffer_i++) {
-//    for (drawBuffer_i = 0; drawBuffer_i < 2; drawBuffer_i++) {
-//    for (drawBuffer_i = 0; drawBuffer_i < 1; drawBuffer_i++) {
     for (drawBuffer_i = 0; drawBuffer_i < _NumberOfDrawBuffers; drawBuffer_i++) {
         if (!drawBuffers[drawBuffer_i]) continue;
         
@@ -300,12 +297,12 @@ static const SceneVertex vertices[] =
         // set last value to 0 clean up line connecting last point to first point
         *(oscilloscopeLine_ptr - 1) = 0.0;
         
-        *(_oscilloscopeLine + 256 - 1) = 0.25;
-        *(_oscilloscopeLine + 512 - 1) = 0.50;
-        *(_oscilloscopeLine + 1024 - 1) = 0.75;
         
         // draw newest line in solid green, else draw in faded green
         if (drawBuffer_i == 0) {
+            *(_oscilloscopeLine + 256 - 1) = 0.25;
+            *(_oscilloscopeLine + 512 - 1) = 0.50;
+            *(_oscilloscopeLine + 1024 - 1) = 0.75;
             self.baseEffect.constantColor = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
         }
         else {
