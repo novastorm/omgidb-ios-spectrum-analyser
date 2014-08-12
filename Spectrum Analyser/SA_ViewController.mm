@@ -380,12 +380,12 @@ static const SceneVertex vertices[] =
             break;
 
         case 2:
-            _NumberOfDrawBuffers = 1;
+            _NumberOfDrawBuffers = kNumDrawBuffers;
             break;
             
-//        case kDefaultDrawSamples:
-//            _NumberOfDrawBuffers = 1;
-//            break;
+        case kNumDrawBuffers:
+            _NumberOfDrawBuffers = 1;
+            break;
             
         default:
             break;
