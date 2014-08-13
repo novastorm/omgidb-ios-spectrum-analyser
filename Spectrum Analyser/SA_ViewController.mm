@@ -52,7 +52,12 @@ SceneVertex;
     AudioController* _audioController;
     Float32* _FFTData;
     GLfloat* _oscilloscopeLine;
+    
+    NSInteger _NumberOfDrawBuffers;
 }
+
+@property (weak, nonatomic) IBOutlet UILabel *drawBuffersLabel;
+@property (weak, nonatomic) IBOutlet UIButton *waveFFTButton;
 
 @end
 
@@ -61,24 +66,7 @@ SceneVertex;
 
 //@synthesize applicationResignedActive = _applicationResignedActive;
 
-const GLfloat _Spectrum_bar_width = 4;
-const GLsizei _NumberOfFrameBuffers = 1;
-
-// value, alpha, red, green, blue
-const GLfloat _ColorLevels[] = {
-    0.000, 1.0, 0.0, 0.0, 0.0
-    , 0.333, 1.0, 0.7, 0.0, 0.0
-    , 0.667, 1.0, 0.0, 0.0, 1.0
-    , 1.000, 1.0, 0.0, 1.0, 1.0
-};
-
-static const SceneVertex vertices[] =
-{
-      {{-0.5f, -0.5f, 0.0 }}
-    , {{ 0.5f, -0.5f, 0.0 }}
-    , {{-0.5f,  0.5f, 0.0 }}
-    , {{ 0.5f,  0.5f, 0.0 }}
-};
+//const GLfloat _Spectrum_bar_width = 4;
 
 /******************************************************************************/
 - (void)viewDidLoad {
@@ -116,10 +104,13 @@ static const SceneVertex vertices[] =
     _audioController = [[AudioController alloc] init];
 
     // create vertex buffer
+    _NumberOfDrawBuffers = 1;
+    [self.drawBuffersLabel setText:[NSString stringWithFormat:@"%d", _NumberOfDrawBuffers]];
+    
     BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     
     _FFTData = (Float32*)calloc(bufferManager->GetFFTOutputBufferLength(), sizeof(Float32));
-    _oscilloscopeLine = (GLfloat*)malloc(kDefaultDrawSamples * 2 * sizeof(GLfloat));
+    _oscilloscopeLine = (GLfloat*)malloc(kDefaultDrawSamples * (2 + 4) * sizeof(GLfloat));
     _animationTimeInterval = 1.0 / 60.0;
 
     // set view context background color
@@ -132,18 +123,26 @@ static const SceneVertex vertices[] =
 
 
     self.vertexBuffer = [[AGLKVertexAttribArrayBuffer alloc]
-    	initWithAttribStride:2 * sizeof(GLfloat)
+    	initWithAttribStride:(2 + 4) * sizeof(GLfloat)
         numberOfVertices:bufferManager->GetCurrentDrawBufferLength()
         bytes:_oscilloscopeLine
-        usage:GL_DYNAMIC_DRAW
+        usage:GL_STATIC_DRAW
     ];
 
-    [self drawView];
-//    _displayMode = SA_DisplayModeOscilloscopeWaveform;
-    _displayMode = SA_DisplayModeOscilloscopeFFT;
+    _displayMode = SA_DisplayModeOscilloscopeWaveform;
     bufferManager->SetDisplayMode(_displayMode);
-    [self setAnimationInterval:1.0 / 20.0];
-    [self startAnimation];
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    [_audioController startIOUnit];
+}
+
+/******************************************************************************/
+- (void) update
+{
+//    DLog();
+    [self drawView];
 }
 
 /******************************************************************************
@@ -153,32 +152,14 @@ static const SceneVertex vertices[] =
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
 //    DLog();
-//    [self.baseEffect prepareToDraw];
-    
-//    // clear back frame buffer
-//    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-//
-//    [self.vertexBuffer
-//    	prepareToDrawWithAttrib:GLKVertexAttribPosition
-//        numberOfCoordinates:3
-//        attribOffset:offsetof(SceneVertex, positionCoords)
-//        shouldEnable:YES
-//    ];
-//    
-//    // draw triangles
-//    [self.vertexBuffer
-//    	drawArrayWithMode:GL_LINE_STRIP
-//        startVertexIndex:0
-//        numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
-//    ];
+    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
+    [self drawView];
 }
 
 /******************************************************************************/
 - (void) drawView
 {
     GLKView *view = (GLKView*) self.view;
-    
-//    if (_applicationResignedActive) return;
     
     [AGLKContext setCurrentContext:view.context];
     [self.baseEffect prepareToDraw];
@@ -208,13 +189,6 @@ static const SceneVertex vertices[] =
 /******************************************************************************/
 - (void) drawOscilloscope
 {
-//    DLog();
-    GLKView *view = (GLKView*) self.view;
-    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-    
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    
     BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     Float32** drawBuffers = bufferManager->GetDrawBuffers();
     
@@ -246,7 +220,7 @@ static const SceneVertex vertices[] =
                 
                 drawBuffers[0][y] = CLAMP(0.0, interpVal, 1.0);
             }
-//            [self cycleOscilloscopeLines];
+            [self cycleOscilloscopeLines];
         }
     }
     
@@ -257,9 +231,7 @@ static const SceneVertex vertices[] =
     
     UInt32 drawBuffer_i;
     // draw a line for each stored line in the buffer
-//    for (drawBuffer_i = 0; drawBuffer_i < kNumDrawBuffers; drawBuffer_i++) {
-    for (drawBuffer_i = 0; drawBuffer_i < 2; drawBuffer_i++) {
-//    for (drawBuffer_i = 0; drawBuffer_i < 1; drawBuffer_i++) {
+    for (drawBuffer_i = 0; drawBuffer_i < _NumberOfDrawBuffers; drawBuffer_i++) {
         if (!drawBuffers[drawBuffer_i]) continue;
         
         oscilloscopeLine_ptr = _oscilloscopeLine;
@@ -270,33 +242,47 @@ static const SceneVertex vertices[] =
         for (i = 0.0; i < max; i=i+1.0) {
             *oscilloscopeLine_ptr++ = i / max ;
             *oscilloscopeLine_ptr++ = (Float32)(*drawBuffer_ptr++);
+            
+            // draw newest line in solid green, else draw in faded green
+            if (drawBuffer_i == 0) {
+                *oscilloscopeLine_ptr++ = 1.0; // red
+                *oscilloscopeLine_ptr++ = 1.0; // green
+                *oscilloscopeLine_ptr++ = 1.0; // blue
+                *oscilloscopeLine_ptr++ = 1.0; //alpha
+            }
+            else {
+                *oscilloscopeLine_ptr++ = 0.0; // red
+                *oscilloscopeLine_ptr++ = 1.0; // green
+                *oscilloscopeLine_ptr++ = 0.0; // blue
+                *oscilloscopeLine_ptr++ =      //alpha
+                (1.0 * (0.55 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers)));
+            }
         }
+        
+        [self.vertexBuffer
+         reinitWithAttribStride:(2 + 4) * sizeof(GLfloat)
+         numberOfVertices:max
+         bytes:_oscilloscopeLine
+         ];
+        
+        [self.vertexBuffer
+         prepareToDrawWithAttrib:GLKVertexAttribPosition
+         numberOfCoordinates:2
+         attribOffset:0
+         shouldEnable:YES
+         ];
+        
+        [self.vertexBuffer
+         prepareToDrawWithAttrib:GLKVertexAttribColor
+         numberOfCoordinates:4
+         attribOffset:2 * sizeof(GLfloat)
+         shouldEnable:YES
+         ];
 
-        // set last value to 0 clean up line connecting last point to first point
-        *(oscilloscopeLine_ptr - 1) = 0.75;
-        
-        *(_oscilloscopeLine + 256 - 1) = 0.5;
-        *(_oscilloscopeLine + 512 - 1) = 0.75;
-//        *(_oscilloscopeLine + 1024 - 1) = 0.5;
-        
-        // draw newest line in solid green, else draw in faded green
-        if (drawBuffer_i == 0) {
-            self.baseEffect.constantColor = GLKVector4Make(0.0, 0.0, 1.0, 1.0);
-        }
-        else {
-            self.baseEffect.constantColor = GLKVector4Make(0.0, 1.0, 0.0, (1.0 * (1.0 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers))));
-        }
-        
         [self.vertexBuffer
-         reinitWithAttribStride:2 * sizeof(GLfloat) numberOfVertices:max bytes:_oscilloscopeLine
-         ];
-        
-        [self.vertexBuffer
-         prepareToDrawWithAttrib:GLKVertexAttribPosition numberOfCoordinates:2 attribOffset:0 shouldEnable:YES
-         ];
-        
-        [self.vertexBuffer
-         drawArrayWithMode:GL_LINE_STRIP startVertexIndex:0 numberOfVertices:max
+         drawArrayWithMode:GL_LINE_STRIP
+         startVertexIndex:0
+         numberOfVertices:max
          ];
     }
 }
@@ -304,48 +290,50 @@ static const SceneVertex vertices[] =
 /******************************************************************************/
 - (void) cycleOscilloscopeLines
 {
-//    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
+    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     // Cycle draw buffer line display
-//    bufferManager->CycleDrawBuffers();
-//    Float32** drawBuffers = bufferManager->GetDrawBuffers();
-//    for (int drawBuffer_i = (kNumDrawBuffers - 2); drawBuffer_i >= 0; drawBuffer_i--) {
-//        memmove(drawBuffers[drawBuffer_i + 1], drawBuffers[drawBuffer_i], bufferManager->GetCurrentDrawBufferLength());
-//    }
+    bufferManager->CycleDrawBuffers();
 }
 
 /******************************************************************************/
-- (void) setAnimationInterval:(NSTimeInterval)interval
-{
-    _animationTimeInterval = interval;
+
+- (IBAction)cycleDrawBufferSize:(id)sender {
+
+    const int cycle[] = { 1, 2, 3, 6, kNumDrawBuffers };
+    static int cycle_i;
     
-    if (_animationTimer) {
-        [self stopAnimation];
-        [self startAnimation];
+    if (_displayMode == SA_DisplayModeOscilloscopeWaveform) {
+        cycle_i = 0;
     }
+    else {
+        ++cycle_i %= (sizeof(cycle) / sizeof(int));
+    }
+
+    _NumberOfDrawBuffers = cycle[cycle_i];
+    
+    [self.drawBuffersLabel
+      setText:[NSString stringWithFormat:@"%d", _NumberOfDrawBuffers]
+     ];
 }
 
-/******************************************************************************/
-- (void) startAnimation
-{
-    _animationTimer = [NSTimer
-    	scheduledTimerWithTimeInterval:_animationTimeInterval
-        target:self
-        selector:@selector(drawView)
-        userInfo:nil
-        repeats:YES
-        ];
-    _animationStarted = [NSDate timeIntervalSinceReferenceDate];
-    [_audioController startIOUnit];
-}
+- (IBAction)switchDisplayDomain:(id)sender {
+    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
 
-/******************************************************************************/
-- (void) stopAnimation
-{
-    [_animationTimer invalidate];
-    _animationTimer = nil;
-    [_audioController stopIOUnit];
-}
+    if(_displayMode == SA_DisplayModeOscilloscopeWaveform) {
+        [self.waveFFTButton
+         setTitle:@"FFT" forState:UIControlStateNormal
+         ];
+        _displayMode = SA_DisplayModeOscilloscopeFFT;
+    }
+    else if(_displayMode == SA_DisplayModeOscilloscopeFFT) {
+        [self.waveFFTButton
+         setTitle:@"Wave" forState:UIControlStateNormal
+         ];
+        _displayMode = SA_DisplayModeOscilloscopeWaveform;
+        [self cycleDrawBufferSize:NULL];
+    }
 
-/******************************************************************************/
+    bufferManager->SetDisplayMode(_displayMode);
+}
 
 @end

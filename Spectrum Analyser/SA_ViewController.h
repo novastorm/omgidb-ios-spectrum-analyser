@@ -15,6 +15,7 @@
 @property (nonatomic) GLKBaseEffect *baseEffect;
 @property (nonatomic) AGLKVertexAttribArrayBuffer *vertexBuffer;
 
+
 //@property BOOL applicationResignedActive;
 
 @end
