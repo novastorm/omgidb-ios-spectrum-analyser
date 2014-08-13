@@ -197,8 +197,7 @@ SceneVertex;
     }
     
     GLfloat* oscilloscopeLine_ptr;
-    GLfloat max = kDefaultDrawSamples;
-//    GLfloat max = bufferManager->GetCurrentDrawBufferLength();
+    GLfloat max = bufferManager->GetCurrentDrawBufferLength();
     Float32* drawBuffer_ptr;
     
     UInt32 drawBuffer_i;
