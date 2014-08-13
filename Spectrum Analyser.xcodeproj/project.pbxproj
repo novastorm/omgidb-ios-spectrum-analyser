@@ -16,7 +16,6 @@
 		3EB8315B19819A6900AC0B9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315919819A6900AC0B9E /* Main.storyboard */; };
 		3EB8315D19819A6900AC0B9E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EB8315C19819A6900AC0B9E /* Images.xcassets */; };
 		3EB8316919819A6900AC0B9E /* Spectrum_AnalyserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB8316819819A6900AC0B9E /* Spectrum_AnalyserTests.m */; };
-		3EB831741982FB1800AC0B9E /* SA_EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3EB831731982FB1800AC0B9E /* SA_EAGLView.mm */; };
 		3EDBEC951983086600A46776 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDBEC941983086600A46776 /* OpenGLES.framework */; };
 		3EDBEC971983086F00A46776 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDBEC961983086F00A46776 /* QuartzCore.framework */; };
 		3EDBEC9C19833A3200A46776 /* SA_AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBEC9B19833A3200A46776 /* SA_AudioController.mm */; };
@@ -63,8 +62,6 @@
 		3EB8316219819A6900AC0B9E /* Spectrum AnalyserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spectrum AnalyserTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EB8316719819A6900AC0B9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EB8316819819A6900AC0B9E /* Spectrum_AnalyserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Spectrum_AnalyserTests.m; sourceTree = "<group>"; };
-		3EB831721982FB1800AC0B9E /* SA_EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SA_EAGLView.h; sourceTree = "<group>"; };
-		3EB831731982FB1800AC0B9E /* SA_EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SA_EAGLView.mm; sourceTree = "<group>"; };
 		3EDBEC941983086600A46776 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		3EDBEC961983086F00A46776 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3EDBEC9819830C9F00A46776 /* SpectrumAnalyser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpectrumAnalyser-Prefix.pch"; sourceTree = "<group>"; };
@@ -152,8 +149,6 @@
 				3EB8315419819A6900AC0B9E /* AppDelegate.m */,
 				3EB8315619819A6900AC0B9E /* SA_ViewController.h */,
 				3EB8315719819A6900AC0B9E /* SA_ViewController.mm */,
-				3EB831721982FB1800AC0B9E /* SA_EAGLView.h */,
-				3EB831731982FB1800AC0B9E /* SA_EAGLView.mm */,
 				3EDBEC9A19833A3200A46776 /* SA_AudioController.h */,
 				3EDBEC9B19833A3200A46776 /* SA_AudioController.mm */,
 				3EDBEC9E19833C6000A46776 /* SA_BufferManager.h */,
@@ -341,7 +336,6 @@
 				3EB8315519819A6900AC0B9E /* AppDelegate.m in Sources */,
 				3EB8315219819A6900AC0B9E /* main.m in Sources */,
 				3EDBECA719872AEA00A46776 /* SA_DCRejectionFilter.cpp in Sources */,
-				3EB831741982FB1800AC0B9E /* SA_EAGLView.mm in Sources */,
 				3E19BA2D198C346C008BBCBD /* AGLKContext.m in Sources */,
 				3EDBECAD198735C300A46776 /* CAStreamBasicDescription.cpp in Sources */,
 				3EDBECB119883AA900A46776 /* CADebugMacros.cpp in Sources */,

@@ -66,24 +66,7 @@ SceneVertex;
 
 //@synthesize applicationResignedActive = _applicationResignedActive;
 
-const GLfloat _Spectrum_bar_width = 4;
-const GLsizei _NumberOfFrameBuffers = 1;
-
-// value, alpha, red, green, blue
-const GLfloat _ColorLevels[] = {
-    0.000, 1.0, 0.0, 0.0, 0.0
-    , 0.333, 1.0, 0.7, 0.0, 0.0
-    , 0.667, 1.0, 0.0, 0.0, 1.0
-    , 1.000, 1.0, 0.0, 1.0, 1.0
-};
-
-static const SceneVertex vertices[] =
-{
-      {{-0.5f, -0.5f, 0.0 }}
-    , {{ 0.5f, -0.5f, 0.0 }}
-    , {{-0.5f,  0.5f, 0.0 }}
-    , {{ 0.5f,  0.5f, 0.0 }}
-};
+//const GLfloat _Spectrum_bar_width = 4;
 
 /******************************************************************************/
 - (void)viewDidLoad {
@@ -170,42 +153,13 @@ static const SceneVertex vertices[] =
 {
 //    DLog();
     [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-
     [self drawView];
-
-    return;
-
-//    GLfloat max = kDefaultDrawSamples;
-//
-//    [self.vertexBuffer
-//     reinitWithAttribStride:2 * sizeof(GLfloat)
-//     numberOfVertices:max
-//     bytes:_oscilloscopeLine
-//     ];
-//    
-//    [self.vertexBuffer
-//     prepareToDrawWithAttrib:GLKVertexAttribPosition
-//     numberOfCoordinates:2
-//     attribOffset:0
-//     shouldEnable:YES
-//     ];
-//    
-//    [self.baseEffect prepareToDraw];
-//    
-//    [self.vertexBuffer
-//     drawArrayWithMode:GL_LINE_STRIP
-////     drawArrayWithMode:GL_POINTS // Crashes on device. Do not draw using GL_POINTS
-//     startVertexIndex:0
-//     numberOfVertices:max
-//     ];
 }
 
 /******************************************************************************/
 - (void) drawView
 {
     GLKView *view = (GLKView*) self.view;
-    
-//    if (_applicationResignedActive) return;
     
     [AGLKContext setCurrentContext:view.context];
     [self.baseEffect prepareToDraw];
@@ -235,10 +189,6 @@ static const SceneVertex vertices[] =
 /******************************************************************************/
 - (void) drawOscilloscope
 {
-//    DLog();
-    GLKView *view = (GLKView*) self.view;
-//    [(AGLKContext*)view.context clear:GL_COLOR_BUFFER_BIT];
-    
     BufferManager* bufferManager = [_audioController getBufferManagerInstance];
     Float32** drawBuffers = bufferManager->GetDrawBuffers();
     
@@ -293,6 +243,7 @@ static const SceneVertex vertices[] =
             *oscilloscopeLine_ptr++ = i / max ;
             *oscilloscopeLine_ptr++ = (Float32)(*drawBuffer_ptr++);
             
+            // draw newest line in solid green, else draw in faded green
             if (drawBuffer_i == 0) {
                 *oscilloscopeLine_ptr++ = 1.0; // red
                 *oscilloscopeLine_ptr++ = 1.0; // green
@@ -304,35 +255,22 @@ static const SceneVertex vertices[] =
                 *oscilloscopeLine_ptr++ = 1.0; // green
                 *oscilloscopeLine_ptr++ = 0.0; // blue
                 *oscilloscopeLine_ptr++ =      //alpha
-                (1.0 * (1.0 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers)));
+                (1.0 * (0.55 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers)));
             }
         }
         
         [self.vertexBuffer
-         reinitWithAttribStride:(2 + 4) * sizeof(GLfloat) numberOfVertices:max bytes:_oscilloscopeLine
+         reinitWithAttribStride:(2 + 4) * sizeof(GLfloat)
+         numberOfVertices:max
+         bytes:_oscilloscopeLine
          ];
         
         [self.vertexBuffer
-         prepareToDrawWithAttrib:GLKVertexAttribPosition numberOfCoordinates:2 attribOffset:0 shouldEnable:YES
+         prepareToDrawWithAttrib:GLKVertexAttribPosition
+         numberOfCoordinates:2
+         attribOffset:0
+         shouldEnable:YES
          ];
-        
-        // draw newest line in solid green, else draw in faded green
-//        if (drawBuffer_i == 0) {
-////            *(_oscilloscopeLine + 256 - 1) = 0.25;
-////            *(_oscilloscopeLine + 512 - 1) = 0.50;
-////            *(_oscilloscopeLine + 1024 - 1) = 0.75;
-////            self.baseEffect.constantColor = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
-//        }
-//        else {
-////            self.baseEffect.constantColor = GLKVector4Make(0.0, 1.0, 0.0, (1.0 * (1.0 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers))));
-//            for(int j = 0; j < max; j++) {
-//                *oscilloscopeLineColor_ptr++ = 0.0; // red
-//                *oscilloscopeLineColor_ptr++ = 1.0; // green
-//                *oscilloscopeLineColor_ptr++ = 0.0; // blue
-//                *oscilloscopeLineColor_ptr++ =      //alpha
-//                    (1.0 * (1.0 - ((GLfloat)drawBuffer_i / (GLfloat)kNumDrawBuffers)));
-//            }
-//        }
         
         [self.vertexBuffer
          prepareToDrawWithAttrib:GLKVertexAttribColor
@@ -342,7 +280,9 @@ static const SceneVertex vertices[] =
          ];
 
         [self.vertexBuffer
-         drawArrayWithMode:GL_LINE_STRIP startVertexIndex:0 numberOfVertices:max
+         drawArrayWithMode:GL_LINE_STRIP
+         startVertexIndex:0
+         numberOfVertices:max
          ];
     }
 }
@@ -358,27 +298,18 @@ static const SceneVertex vertices[] =
 /******************************************************************************/
 
 - (IBAction)cycleDrawBufferSize:(id)sender {
+
+    const int cycle[] = { 1, 2, 3, 6, kNumDrawBuffers };
+    static int cycle_i;
+    
     if (_displayMode == SA_DisplayModeOscilloscopeWaveform) {
-        _NumberOfDrawBuffers = 1;
+        cycle_i = 0;
     }
     else {
-        switch (_NumberOfDrawBuffers) {
-            case 1:
-                _NumberOfDrawBuffers = 2;
-                break;
-
-            case 2:
-                _NumberOfDrawBuffers = kNumDrawBuffers;
-                break;
-                
-            case kNumDrawBuffers:
-                _NumberOfDrawBuffers = 1;
-                break;
-                
-            default:
-                break;
-        }
+        ++cycle_i %= (sizeof(cycle) / sizeof(int));
     }
+
+    _NumberOfDrawBuffers = cycle[cycle_i];
     
     [self.drawBuffersLabel
       setText:[NSString stringWithFormat:@"%d", _NumberOfDrawBuffers]
