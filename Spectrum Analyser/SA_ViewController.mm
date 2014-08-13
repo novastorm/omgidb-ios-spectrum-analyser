@@ -193,35 +193,7 @@ SceneVertex;
     Float32** drawBuffers = bufferManager->GetDrawBuffers();
     
     if (_displayMode == SA_DisplayModeOscilloscopeFFT) {
-        if (bufferManager->HasNewFFTData()) {
-            bufferManager->GetFFTOutput(_FFTData);
-            
-            int y, maxY;
-            maxY = bufferManager->GetCurrentDrawBufferLength();
-            int FFTLength = bufferManager->GetFFTOutputBufferLength();
-            for (y = 0; y < maxY; y++) {
-                CGFloat yFract = (CGFloat)y / (CGFloat)(maxY - 1);
-                CGFloat FFTIndex = yFract * ((CGFloat)FFTLength - 1);
-                
-                double FFTIndex_i, FFTIndex_f;
-                FFTIndex_f = modf(FFTIndex, &FFTIndex_i);
-                
-                CGFloat FFT_l_fl, FFT_r_fl;
-                CGFloat interpVal;
-                
-                int lowerIndex = (int) FFTIndex_i;
-                int upperIndex = (int) FFTIndex_i + 1;
-                
-                upperIndex = (upperIndex == FFTLength) ? FFTLength - 1 : upperIndex;
-                
-                FFT_l_fl = (CGFloat)(_FFTData[lowerIndex] + 80) / 64.0;
-                FFT_r_fl = (CGFloat)(_FFTData[upperIndex] + 80) / 64.0;
-                interpVal = FFT_l_fl * (1.0 - FFTIndex_f) + FFT_r_fl * FFTIndex_f;
-                
-                drawBuffers[0][y] = CLAMP(0.0, interpVal, 1.0);
-            }
-            [self cycleOscilloscopeLines];
-        }
+        [self processFFT];
     }
     
     GLfloat* oscilloscopeLine_ptr;
@@ -284,6 +256,43 @@ SceneVertex;
          startVertexIndex:0
          numberOfVertices:max
          ];
+    }
+}
+
+/******************************************************************************/
+- (void) processFFT
+{
+    BufferManager* bufferManager = [_audioController getBufferManagerInstance];
+    Float32** drawBuffers = bufferManager->GetDrawBuffers();
+
+    if (bufferManager->HasNewFFTData()) {
+        bufferManager->GetFFTOutput(_FFTData);
+        
+        int y, maxY;
+        maxY = bufferManager->GetCurrentDrawBufferLength();
+        int FFTLength = bufferManager->GetFFTOutputBufferLength();
+        for (y = 0; y < maxY; y++) {
+            CGFloat yFract = (CGFloat)y / (CGFloat)(maxY - 1);
+            CGFloat FFTIndex = yFract * ((CGFloat)FFTLength - 1);
+            
+            double FFTIndex_i, FFTIndex_f;
+            FFTIndex_f = modf(FFTIndex, &FFTIndex_i);
+            
+            CGFloat FFT_l_fl, FFT_r_fl;
+            CGFloat interpVal;
+            
+            int lowerIndex = (int) FFTIndex_i;
+            int upperIndex = (int) FFTIndex_i + 1;
+            
+            upperIndex = (upperIndex == FFTLength) ? FFTLength - 1 : upperIndex;
+            
+            FFT_l_fl = (CGFloat)(_FFTData[lowerIndex] + 80) / 64.0;
+            FFT_r_fl = (CGFloat)(_FFTData[upperIndex] + 80) / 64.0;
+            interpVal = FFT_l_fl * (1.0 - FFTIndex_f) + FFT_r_fl * FFTIndex_f;
+            
+            drawBuffers[0][y] = CLAMP(0.0, interpVal, 1.0);
+        }
+        [self cycleOscilloscopeLines];
     }
 }
 
