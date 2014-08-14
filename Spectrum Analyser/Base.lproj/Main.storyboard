@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6205" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cHP-tZ-Ij3">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
         <capability name="Constraints with attributes relative to the layout margin" minToolsVersion="6.0"/>
     </dependencies>
@@ -13,14 +14,14 @@
                         <viewControllerLayoutGuide type="top" id="H7r-dN-fFV"/>
                         <viewControllerLayoutGuide type="bottom" id="h8Y-By-Ksa"/>
                     </layoutGuides>
-                    <glkView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" id="Hrq-Pu-hER">
+                    <glkView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" id="Hrq-Pu-hER">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ubF-iD-h4q">
-                                <rect key="frame" x="54" y="502" width="97" height="30"/>
+                                <rect key="frame" x="50" y="76" width="97" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="97" id="eBH-G6-IIh"/>
+                                    <constraint firstAttribute="width" constant="97" id="80d-sh-RgG"/>
                                 </constraints>
                                 <state key="normal" title="Draw Buffers">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -30,15 +31,15 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7a6-9W-TAG">
-                                <rect key="frame" x="52" y="540" width="100" height="21"/>
+                                <rect key="frame" x="48" y="114" width="100" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aBE-9E-9A6">
-                                <rect key="frame" x="488" y="502" width="69" height="30"/>
+                                <rect key="frame" x="484" y="76" width="69" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="69" id="Cjb-ix-OPv"/>
+                                    <constraint firstAttribute="width" constant="69" id="JQl-HV-YS8"/>
                                 </constraints>
                                 <state key="normal" title="Wave">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -52,13 +53,13 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7a6-9W-TAG" firstAttribute="leading" secondItem="Hrq-Pu-hER" secondAttribute="leadingMargin" constant="36" id="4tD-OQ-InU"/>
-                            <constraint firstItem="aBE-9E-9A6" firstAttribute="baseline" secondItem="ubF-iD-h4q" secondAttribute="baseline" id="fzo-4t-djU"/>
-                            <constraint firstItem="7a6-9W-TAG" firstAttribute="centerX" secondItem="ubF-iD-h4q" secondAttribute="centerX" id="hPz-a7-Ovk"/>
-                            <constraint firstItem="h8Y-By-Ksa" firstAttribute="top" secondItem="7a6-9W-TAG" secondAttribute="bottom" constant="39" id="jLI-wo-Zyf"/>
-                            <constraint firstItem="7a6-9W-TAG" firstAttribute="top" secondItem="ubF-iD-h4q" secondAttribute="bottom" constant="8" symbolic="YES" id="mfO-DB-TKH"/>
-                            <constraint firstItem="ubF-iD-h4q" firstAttribute="leading" secondItem="Hrq-Pu-hER" secondAttribute="leadingMargin" constant="38" id="rwi-en-QW0"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="aBE-9E-9A6" secondAttribute="trailing" constant="27" id="wRL-Cg-n04"/>
+                            <constraint firstItem="ubF-iD-h4q" firstAttribute="leading" secondItem="Hrq-Pu-hER" secondAttribute="leadingMargin" constant="34" id="5OU-t2-U2l"/>
+                            <constraint firstItem="7a6-9W-TAG" firstAttribute="top" secondItem="ubF-iD-h4q" secondAttribute="bottom" constant="8" symbolic="YES" id="Mjt-kb-WmC"/>
+                            <constraint firstItem="7a6-9W-TAG" firstAttribute="centerX" secondItem="ubF-iD-h4q" secondAttribute="centerX" id="RGS-rP-iN5"/>
+                            <constraint firstItem="7a6-9W-TAG" firstAttribute="leading" secondItem="Hrq-Pu-hER" secondAttribute="leadingMargin" constant="32" id="bnm-An-tGL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aBE-9E-9A6" secondAttribute="trailing" constant="31" id="fkd-3I-kcA"/>
+                            <constraint firstItem="ubF-iD-h4q" firstAttribute="baseline" secondItem="aBE-9E-9A6" secondAttribute="baseline" id="mCe-5R-Mcs"/>
+                            <constraint firstItem="ubF-iD-h4q" firstAttribute="top" secondItem="H7r-dN-fFV" secondAttribute="bottom" constant="56" id="q4f-S0-wZF"/>
                         </constraints>
                         <connections>
                             <outlet property="delegate" destination="cHP-tZ-Ij3" id="1Kt-fC-Jto"/>
@@ -71,7 +72,7 @@
                 </glkViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yox-61-VD8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="430" y="453"/>
+            <point key="canvasLocation" x="331" y="544"/>
         </scene>
     </scenes>
 </document>
